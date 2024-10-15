@@ -44,7 +44,7 @@ INSTALLED_APPS = [
 
     "rest_framework",
     "drf_spectacular",
-
+    'rest_framework_simplejwt',
     "planetarium",
     "user"
 ]
@@ -166,5 +166,5 @@ SPECTACULAR_SETTINGS = {
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=555),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=11),
-    "ROTATE_REFRESH_TOKENS": False,
+    "ROTATE_REFRESH_TOKENS": True,
 }
