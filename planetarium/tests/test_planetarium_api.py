@@ -9,8 +9,16 @@ from django.urls import reverse
 from rest_framework.test import APIClient
 from rest_framework import status
 
-from planetarium.models import AstronomyShow, ShowSession, PlanetariumDome, ShowTheme, Ticket
-from planetarium.serializers import AstronomyShowListSerializer, AstronomyShowDetailSerializer
+from planetarium.models import (
+    AstronomyShow,
+    ShowSession,
+    PlanetariumDome,
+    ShowTheme
+)
+from planetarium.serializers import (
+    AstronomyShowListSerializer,
+    AstronomyShowDetailSerializer
+)
 
 ASTRONOMY_SHOW_URL = reverse("planetarium:astronomyshow-list")
 SHOW_SESSION_URL = reverse("planetarium:showsession-list")
@@ -24,7 +32,11 @@ def sample_astronomy_show(**params):
     return AstronomyShow.objects.create(**defaults)
 
 def sample_show_session(**params):
-    dome = PlanetariumDome.objects.create(name="Main Dome", rows=10, seats_in_row=10)
+    dome = PlanetariumDome.objects.create(
+        name="Main Dome",
+        rows=10,
+        seats_in_row=10
+    )
     defaults = {
         "show_time": "2024-10-15 14:00:00",
         "astronomy_show": sample_astronomy_show(),
@@ -137,7 +149,9 @@ class AstronomyShowImageUploadTests(TestCase):
     def test_upload_image_bad_request(self):
         """Test uploading an invalid image"""
         url = image_upload_url(self.show.id)
-        res = self.client.post(url, {"image": "notanimage"}, format="multipart")
+        res = self.client.post(
+            url, {"image": "notanimage"}, format="multipart"
+        )
 
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
 
@@ -173,7 +187,10 @@ class AdminShowSessionApiTests(TestCase):
 
     def test_create_show_session(self):
         """Test creating a new show session"""
-        dome = PlanetariumDome.objects.create(name="Main Dome", rows=10, seats_in_row=10)
+        dome = PlanetariumDome.objects.create(
+            name="Main Dome",
+            rows=10, seats_in_row=10
+        )
         show = sample_astronomy_show()
         payload = {
             "show_time": "2024-10-15 14:00:00",
