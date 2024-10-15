@@ -9,6 +9,7 @@ CREATE_USER_URL = reverse('user:create')
 TOKEN_URL = reverse('user:token_obtain_pair')
 ME_URL = reverse('user:manage')
 
+
 class PublicUserApiTests(TestCase):
 
     def setUp(self):
@@ -43,6 +44,7 @@ class PublicUserApiTests(TestCase):
             email=payload['email']
         ).exists()
         self.assertFalse(user_exists)
+
 
 class PrivateUserApiTests(TestCase):
 
