@@ -13,11 +13,19 @@ class ShowTheme(models.Model):
         return self.name
 
 
+def astronomy_show_image_file_path(instance, filename):
+    _, extension = os.path.splitext(filename)
+    filename = f"{slugify(instance.title)}-{uuid.uuid4()}{extension}"
+
+    return os.path.join("uploads/astronomy_show/", filename)
+
+
 class AstronomyShow(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     show_themes = models.ManyToManyField(ShowTheme, blank=True)
-    # image = models.ImageField(null=True, upload_to=astronomy_show_image_file_path)
+    image = models.ImageField(null=True, upload_to=astronomy_show_image_file_path)
+
     class Meta:
         ordering = ["title"]
 
@@ -46,8 +54,8 @@ class ShowSession(models.Model):
     class Meta:
         ordering = ["-show_time"]
 
-    # def __str__(self):
-    #     return self.astronomy_show.title + " " + str(self.show_time)
+    def __str__(self):
+        return self.astronomy_show.title + " " + str(self.show_time)
 
 class Reservation(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -98,11 +106,11 @@ class Ticket(models.Model):
         )
 
     def save(
-        self,
-        force_insert=False,
-        force_update=False,
-        using=None,
-        update_fields=None
+            self,
+            force_insert=False,
+            force_update=False,
+            using=None,
+            update_fields=None,
     ):
         self.full_clean()
         return super(Ticket, self).save(
