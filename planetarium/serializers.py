@@ -2,7 +2,14 @@ from django.db import transaction
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from planetarium.models import (ShowTheme, PlanetariumDome, AstronomyShow, Ticket, ShowSession, Reservation)
+from planetarium.models import (
+    ShowTheme,
+    PlanetariumDome,
+    AstronomyShow,
+    Ticket,
+    ShowSession,
+    Reservation
+)
 
 
 class ShowThemeSerializer(serializers.ModelSerializer):
@@ -66,8 +73,14 @@ class ShowSessionSerializer(serializers.ModelSerializer):
 
 
 class ShowSessionListSerializer(ShowSessionSerializer):
-    astronomy_show_title = serializers.CharField(source="astronomy_show.title", read_only=True)
-    astronomy_show_image = serializers.ImageField(source="astronomy_show.image", read_only=True)
+    astronomy_show_title = serializers.CharField(
+        source="astronomy_show.title",
+        read_only=True
+    )
+    astronomy_show_image = serializers.ImageField(
+        source="astronomy_show.image",
+        read_only=True
+    )
     planetarium_dome_name = serializers.CharField(
         source="planetarium_dome.name", read_only=True
     )
@@ -106,7 +119,7 @@ class TicketSerializer(serializers.ModelSerializer):
 
 
 class TicketListSerializer(TicketSerializer):
-    show_session = ShowSessionListSerializer(many=False, read_only=True)
+    show_session = ShowSessionListSerializer(read_only=True)
 
 
 class TicketSeatsSerializer(TicketSerializer):
@@ -124,11 +137,17 @@ class ShowSessionDetailSerializer(ShowSessionSerializer):
 
     class Meta:
         model = ShowSession
-        fields = ("id", "show_time", "astronomy_show", "planetarium_dome", "taken_places")
+        fields = (
+            "id",
+            "show_time",
+            "astronomy_show",
+            "planetarium_dome",
+            "taken_places"
+        )
 
 
 class ReservationSerializer(serializers.ModelSerializer):
-    tickets = TicketSerializer(many=True, read_only=False, allow_empty=False)
+    tickets = TicketSerializer(many=True)
 
     class Meta:
         model = Reservation

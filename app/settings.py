@@ -13,6 +13,7 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -21,7 +22,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-p=90vxpy045xn*zuxjnkp4(irt+va5w#=yve(x*kh_45b%7lxu"
+
+SECRET_KEY = os.getenv("SECRET_KEY", "default-secret-key-for-development")
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -48,7 +51,6 @@ INSTALLED_APPS = [
     "planetarium",
     "user"
 ]
-
 
 
 MIDDLEWARE = [
@@ -151,6 +153,9 @@ REST_FRAMEWORK = {
     "DEFAULT_THROTTLE_RATES": {"anon": "100/day", "user": "300/day"},
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+    "DEFAULT_PERMISSION_CLASSES": (
+        "planetarium.permissions.IsAdminOrIfAuthenticatedReadOnly",
     ),
 }
 
